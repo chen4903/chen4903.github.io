@@ -2,23 +2,40 @@
 # https://github.com/riggraz/no-style-please#customize-the-menu
 
 entries:
-  - title: about
-    entries:
-      - title: LEVI_104's blog
-        url: about
+  - title: About
+    url: about
 
-  - title: all posts
-    post_list:
-      show_more: true
-      show_more_text: See archive...
-      show_more_url: archive.html
+  # - title: Articles
+  #   post_list:
+  #     category: articles
+  #     show_more: true
+  #     show_more_text: See more posts...
+  #     show_more_url: example2-archive.html
 
-  - title: blockchain
+  - title: EVM Articles
     post_list:
       category: blockchain
       show_more: true
       show_more_text: See more posts...
       show_more_url: example2-archive.html
 
-  - title: rss
-    url: feed.xml
+  - title: Notes
+    entries:
+      - title: PL
+        entries:
+          - title: Static Program Analysis
+            url: https://github.com/chen4903/Static-Program-Analysis
+          - title: Compiler Principals
+            url: https://github.com/chen4903/compiler-principles
+      - title: UniswapX
+        url: https://github.com/chen4903/uniswap-learn
+      - title: Solana
+        url: https://github.com/chen4903/Index-Solana
+      - title: Rust
+        url: https://github.com/chen4903/Index-Rust
+
+  - title: CTF Writeups
+    url: https://github.com/chen4903/CTFs-Writeup
+
+  - title: RSS
+    url: /feed.xml
