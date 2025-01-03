@@ -3,7 +3,7 @@ layout: page
 title: About
 ---
 
-I am interested in DeFi and blockchain security.
+Hola, I am Qin Chen, and my nickname is LEVI_104. I major in computer science, and now I am focusing on blockchain security and Distributed Finance (DeFi). I plan on using this space to conduct some technical analysis, and sometimes I write smaller or personal pieces. If you have any fun ideas or things to share, feel free to contact me :)
 
 Contact:
 
