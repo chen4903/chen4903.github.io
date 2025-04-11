@@ -20,6 +20,14 @@ entries:
       show_more_text: See archive...
       show_more_url: blockchain-archive.html
 
+  - title: REVM Articles
+    post_list:
+      category: revm
+      limit: 5
+      show_more: true
+      show_more_text: See archive...
+      show_more_url: revm-archive.html
+
   - title: Notes
     entries:
       - title: PL
