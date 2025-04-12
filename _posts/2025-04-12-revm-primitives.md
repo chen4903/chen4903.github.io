@@ -3,19 +3,6 @@ layout: post
 category: revm
 ---
 
-## constants
-
-列出一些有意义的常量
-
-| 常量               | 值                                                           | 说明                                         |
-| ------------------ | ------------------------------------------------------------ | -------------------------------------------- |
-| BLOCK_HASH_HISTORY | 256                                                          | 最多访问最多前256区块的hash                  |
-| PRECOMPILE3        | [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3] | 预编译地址0x3                                |
-| STACK_LIMIT        | 1024                                                         | stack最大深度                                |
-| MAX_INITCODE_SIZE  | 2 * eip170::MAX_CODE_SIZE                                    | 最大的init code                              |
-| CALL_STACK_LIMIT   | 1024                                                         | call的调用栈深度（说明重入攻击最多深度1024） |
-| MAX_CODE_SIZE      | 0x6000                                                       | 合约大小限制，这里应该是指runtime code       |
-
 ## eip170
 
 | 常量          | 值     | 说明                                   |
@@ -58,13 +45,15 @@ PRAGUE, // PRAGUE                 TBD
 OSAKA,            // Osaka                  TBD
 ```
 
+## constants
 
+列出一些有意义的常量
 
-
-
-
-
-
-
-
-
+| 常量               | 值                                                           | 说明                                         |
+| ------------------ | ------------------------------------------------------------ | -------------------------------------------- |
+| BLOCK_HASH_HISTORY | 256                                                          | 最多访问最多前256区块的hash                  |
+| PRECOMPILE3        | [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3] | 预编译地址0x3                                |
+| STACK_LIMIT        | 1024                                                         | stack最大深度                                |
+| MAX_INITCODE_SIZE  | 2 * eip170::MAX_CODE_SIZE                                    | 最大的init code                              |
+| CALL_STACK_LIMIT   | 1024                                                         | call的调用栈深度（说明重入攻击最多深度1024） |
+| MAX_CODE_SIZE      | 0x6000                                                       | 合约大小限制，这里应该是指runtime code       |
