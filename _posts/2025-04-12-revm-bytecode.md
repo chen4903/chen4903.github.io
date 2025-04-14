@@ -3,6 +3,29 @@ layout: post
 category: revm
 ---
 
+## opcode
+
+每个操作码的定义：
+
+```rust
+pub struct OpCode(u8);
+```
+
+操作码的实际内容：其中`immediate_size`是立即数的字节大小，比如`PUSH1`到 `PUSH32` 操作码的 `immediate_size` 分别是 1-32，表示它们会在操作码后面带有相应字节数的立即数；`not_eof`用于EOF的验证，如果不是EOF操作码则为false，比如`CODESIZE`、`CODECOPY`、`EXTCODESIZE`、`EXTCODECOPY` 等操作码都被标记为 `not_eof`，这些操作码主要与传统合约格式相关，在新的 EOF 格式中不再支持；`terminating`是表示某个操作码是不是终止功能的，例如`RETURN`, `REVERT`等
+
+```rust
+pub struct OpCodeInfo {
+    name_ptr: NonNull<u8>,
+    name_len: u8,
+    inputs: u8,
+    outputs: u8,
+    immediate_size: u8,
+    not_eof: bool, // 这是为了支持 EVM 的向前兼容性，同时允许在新格式中禁用一些旧的操作码
+    /// If the opcode stops execution. aka STOP, RETURN, ..
+    terminating: bool,
+}
+```
+
 ## bytecode
 
 有三种bytecode类型，其中LegacyAnalyzedBytecode是指只有一个`Stop`操作码的，并且它拥有一个`JumpTable`来指示字节码程序流如何跳转。
@@ -30,6 +53,46 @@ LegacyAnalyzedBytecode和Eof的区别：
 | 典型用例     | 传统智能合约                  | 需要更高安全性的复杂合约                                     |
 
 并且这三种类型的开头不一样：eof以`ef00`开头，Eip7702以`ef01`开头，普通的字节码则不能以前两者那样开头。
+
+## legacy
+
+`analyze_legacy()`函数，使用字节码来创建JumpTable，它存储了有效的跳转目的地。
+
+```rust
+pub fn analyze_legacy(bytetecode: &[u8]) -> JumpTable {
+```
+
+对于每一个legacy类型的字节码，其定义如下：
+```rust
+pub struct LegacyAnalyzedBytecode {
+    /// Bytecode with 33 zero bytes padding
+    bytecode: Bytes,
+    /// Original bytes length
+    original_len: usize,
+    /// Jump table
+    jump_table: JumpTable,
+}
+```
+
+与其他的EVM实现一般是在运行时中分析字节码然后缓存JumpTable，而revm是提前创建好JumpTable，与bytecode是同级别一起运行的。所有legacy字节码末尾填充33个零字节，确保始终以有效的STOP操作码（0x00）结尾。填充33字节（而非1字节）是为了处理原字节码末尾存在PUSH32操作码但后续数据不足的情况。`original_len`用来支持后续复制。并且字节码长度不得为0。
+
+```rust
+impl LegacyRawBytecode {
+    /// Converts the raw bytecode into an analyzed bytecode.
+    ///
+    /// It extends the bytecode with 33 zero bytes and analyzes it to find the jumpdests.
+    pub fn into_analyzed(self) -> LegacyAnalyzedBytecode {
+        let len = self.0.len();
+        let mut padded_bytecode = Vec::with_capacity(len + 33);
+        padded_bytecode.extend_from_slice(&self.0);
+        padded_bytecode.resize(len + 33, 0);
+        let jump_table = analyze_legacy(&padded_bytecode);
+        LegacyAnalyzedBytecode::new(padded_bytecode.into(), len, jump_table)
+    }
+}
+```
+
+但是有个疑问，为什么在`LegacyAnalyzedBytecode::new()`创建的时候，不检验这33字节的padding呢？查看此[PR](https://github.com/bluealloy/revm/pull/2409)。
 
 ## eof
 
@@ -192,14 +255,6 @@ pub struct AccessTracker {
 
 EOF container的code部分，叫做CodeType，它有两种类型：Initcode和Runtime
 
-## legacy
-
-TODO
-
-## opcode
-
-TODO
-
 ## eip7702
 
 EIP-7702的字节码由这几部分组成：`0xEF00` (MAGIC) + `0x00` (VERSION) + 20 bytes of address。所以它的字节码长度必须为23，并且目前只支持版本0。
@@ -211,14 +266,6 @@ pub struct Eip7702Bytecode {
     pub raw: Bytes,
 }
 ```
-
-TODO
-
-## utils
-
-TODO
-
-
 
 
 
