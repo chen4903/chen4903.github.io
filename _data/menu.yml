@@ -12,7 +12,7 @@ entries:
       show_more_text: See archive...
       show_more_url: article-archive.html
 
-  - title: EVM Articles
+  - title: Blockchain Articles
     post_list:
       category: blockchain
       limit: 5
