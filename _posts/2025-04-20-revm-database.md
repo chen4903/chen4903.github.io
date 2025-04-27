@@ -136,6 +136,178 @@ pub enum AccountState {
   - 区块执行中的账户状态合并：多个交易修改同一个账户，状态回滚等
   - 账户销毁与创建：比如账户 A 在交易 1 中被销毁，账户 A 在交易 2 中被重新创建并修改，在这种情况下，transition 函数可以用于合并账户 A 的状态变更，确保最终状态为 DestroyedChanged，表示账户被销毁后又发生了变更。
 
+### bundle_account
+
+这个模块的设计是为了解决 EVM中账户状态管理，它通过 BundleAccount 结构体，来跟踪、回滚和生成账户状态的变化。
+
+```rust
+pub struct BundleAccount {
+    pub info: Option<AccountInfo>,
+    pub original_info: Option<AccountInfo>,
+    /// 包含原始状态和当前状态。
+    /// 提取变更集时，我们比较原始值是否与当前值不同。
+    /// 如果不同，我们将其添加到变更集中。
+    /// 如果账户被销毁，我们忽略原始值，并将当前状态与U256::ZERO进行比较。
+    pub storage: StorageWithOriginalValues, // 这个存储表示在区块改变之前的值。
+    /// Account status.
+    pub status: AccountStatus,
+}
+
+pub type StorageWithOriginalValues = HashMap<U256, StorageSlot>;
+
+pub struct StorageSlot {
+    /// 存储槽被更改之前的值。
+    /// 当插槽首次加载时，这是原始值。
+    /// 如果插槽没有被更改，这等于当前值。
+    pub previous_or_original_value: U256,
+    /// 当加载sload时，当前值被设置为原始值
+    pub present_value: U256,
+}
+```
+
+这个函数有点奇怪，为什么要加1：在 BundleAccount 结构体中，size_hint 方法返回 1 + self.storage.len()，这里的 "+1" 是因为账户的变更包含两个部分：
+
+1. 账户基本信息的变更（对应 "+1"）：
+
+   - 账户的基本信息（如余额、nonce、代码等）的变更算作一个变更单位。
+
+   - 这些信息存储在 AccountInfo 中。
+
+2. 存储槽的变更（对应 `self.storage.len()`）：
+
+   - 每个存储槽（storage slot）的变更都算作一个变更单位。
+
+   - 存储在 storage 字段中的每个键值对都代表一个存储槽的变更
+
+```rust
+pub fn size_hint(&self) -> usize {
+    1 + self.storage.len()
+}
+```
+
+- `storage_slot()`：获取某个slot的值
+- `rever()`：
+  - 根据传入的 AccountRevert 参数，将账户的状态（包括基本信息和存储）回滚到之前的状态。它会更新账户的 status、info 和 storage 字段，并根据情况决定是否可以移除账户。
+  - 主要在`status`, `storage`和`accountInfo`三个方面回滚
+- `update_and_create_revert()`：
+  - 更新账户状态并生成一个 AccountRevert 对象，该对象可以用于将账户状态回滚到更新前的状态。如果没有需要回滚的变更，则返回 None。
+  - 这个函数很复杂，主要分两部分：第一部分准备了一些helper函数，第二部分是根据transition.status来更新状态，并且返回更改之前的状态
+
+### bundle_state
+
+实现了一个区块链状态管理模块，核心是BundleState和BundleBuilder两个结构体，提供状态构建、转换、扩展和回滚的核心功能。很好的回滚机制，包括账户回滚和slot storage回滚
+
+```rust
+pub struct BundleBuilder { // builder模式，用于逐步构建BundleState
+    states: HashSet<Address>,
+    state_original: HashMap<Address, AccountInfo>,
+    state_present: HashMap<Address, AccountInfo>,
+    state_storage: HashMap<Address, HashMap<U256, (U256, U256)>>,
+
+    reverts: BTreeSet<(u64, Address)>,
+    revert_range: RangeInclusive<u64>,
+    revert_account: HashMap<(u64, Address), Option<Option<AccountInfo>>>,
+    revert_storage: HashMap<(u64, Address), Vec<(U256, U256)>>,
+
+    contracts: HashMap<B256, Bytecode>,
+}
+
+pub struct BundleState { // 核心数据结构
+    pub state: HashMap<Address, BundleAccount>,
+    pub contracts: HashMap<B256, Bytecode>, // 这个区块中创建的所有合约，hash=>字节码
+    pub reverts: Reverts, // 存储回滚信息，按块高度组织，允许回滚到之前的状态
+    pub state_size: usize, // bundle state中plain state的大小
+    pub reverts_size: usize, // bundle state中reverts的大小
+}
+
+pub enum OriginalValuesKnown { // 用于控制在转换为普通状态（plain state）时是否考虑原始值
+    Yes, // 表示原始值已知，适用于不期望父块被提交或回滚的场景。
+    No,  // 表示原始值不可靠，适用于状态可能被拆分或扩展的场景。
+}
+
+pub enum BundleRetention { // 决定是否保留回滚信息
+    PlainState, // 只更新普通状态。
+    Reverts, // plain state和reverts状态都会保留
+}
+```
+
+其中的函数实现较为复杂，我们宏观上分析它们的功能。
+
+- 状态构建（`BundleBuilder::build()`）
+
+  - **流程**：
+
+    - 遍历states，为每个地址创建BundleAccount，包含原始信息、当前信息和存储槽。
+    - 将存储槽从(U256, U256)转换为StorageSlot（包含原始值和当前值）。
+    - 按revert_range初始化回滚映射，遍历reverts生成AccountRevert（包含账户和存储槽的回滚信息）。
+    - 整合状态、合约和回滚，生成BundleState。
+
+  - **特点**：
+
+    - 确保回滚信息仅在revert_range范围内有效，忽略无效输入。
+
+    - 计算state_size和reverts_size，为性能优化提供依据。
+
+- 状态转换（`to_plain_state()`）
+
+  - 功能：
+    - 将BundleState转换为StateChangeset，包含账户信息变更、存储变更和合约。
+    - 根据OriginalValuesKnown决定是否检查原始值。
+  - 逻辑：
+    - 遍历state，检查账户信息是否变化（is_info_changed）或是否被销毁（was_destroyed）。
+    - 对于存储槽，检查是否被销毁或值是否变化，生成PlainStorageChangeset。
+    - 过滤空字节码的合约，确保仅记录有效合约。
+  - **用途**：用于将内存中的状态变化持久化到数据库。
+
+- 状态扩展（`extend()`）
+
+  - 功能：合并两个BundleState，处理状态、合约和回滚的合并。
+  - 逻辑
+    - 如果另一个状态（other）的账户被销毁，将当前状态的存储槽转移到other的回滚中。
+    - 合并状态时，优先保留other的最新信息，更新存储槽的当前值。
+    - 扩展合约和回滚，保持一致性。
+  - 用途：支持多块状态的合并，适用于区块链分叉或批量处理。
+
+- 回滚（`revert()` 和 `revert_latest()`）
+
+  - 功能：通过revert_latest回滚最近一次状态变化，revert支持回滚指定次数。
+  - 逻辑：
+    - 从reverts中弹出最近的回滚记录，遍历每个账户的回滚信息。
+    - 根据AccountInfoRevert（恢复、删除或无操作）和存储槽回滚，更新或删除state中的账户。
+    - 维护state_size和reverts_size的准确性
+  - 用途：
+    - 用于处理交易失败或分叉回滚，恢复到之前的状态。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
