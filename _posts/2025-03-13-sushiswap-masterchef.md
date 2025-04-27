@@ -123,13 +123,15 @@ function pendingSushi(uint256 _pid, address _user) external view returns (uint25
 ```
 
 $$
-\text{pending} = \left( \text{user.amount} \times \frac{\text{accSushiPerShare}}{\text{ACC\_SUSHI\_PRECISION}} \right) - \text{user.rewardDebt}
+\text{pending} = \left( \text{user.amount} \times \frac{accSushiPerShare}{ACC\_SUSHI\_PRECISION} \right) - \text{user.rewardDebt}
 $$
 
 每次用户存款或提取时，更新rewardDebt（债务）：
+
 $$
-\text{rewardDebt} += \text{amount} \times \frac{\text{accSushiPerShare}}{\text{ACC\_SUSHI\_PRECISION}}
+\text{rewardDebt} += \text{amount} \times \frac{\text{accSushiPerShare}}{ACC\_SUSHI\_PRECISION}
 $$
+
 收获奖励时，rewardDebt设置为当前累积奖励，确保用户只领取新产生的奖励。
 
 ## 其他
