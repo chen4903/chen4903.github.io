@@ -1,0 +1,18 @@
+<!-- Mermaid Support -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(function() {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          curve: 'linear',
+          padding: 15
+        }
+      });
+      mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
+    }, 500);
+  });
+</script>
