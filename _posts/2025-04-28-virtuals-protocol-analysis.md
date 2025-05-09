@@ -251,9 +251,6 @@ function battleElo(uint256 currentRating, uint8[] memory battles) public view re
     uint256 eloB = 1000;
     for (uint256 i = 0; i < battles.length; i++) {
         uint256 result = mapBattleResultToGameResult(battles[i]);
-        // @audit [medium] 这里的K设置为30，但是 ratingChange() 函数期望是 20
-        // @audit [high] 这里 eloB 和 eloA 的顺序反了，并且后续 eloA 和 eloB 根据 negative 的值进行加减运算，导致最终计算错误
-        //         修复：将 ratingChange() 函数的 eloB 和 eloA 的顺序调换: Elo.ratingChange(eloA, eloB, result, k);
         (uint256 change, bool negative) = Elo.ratingChange(eloB, eloA, result, k);
         change = _roundUp(change, 100);
         if (negative) {
@@ -268,9 +265,7 @@ function battleElo(uint256 currentRating, uint8[] memory battles) public view re
 }
 ```
 
-
-
-
+> 上述代码均使用[审计比赛版本](https://github.com/code-423n4/2025-04-virtuals-protocol)，非最终版本
 
 
 
