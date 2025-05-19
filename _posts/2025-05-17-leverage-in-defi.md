@@ -307,7 +307,7 @@ mainBundle[0]: 将用户的初始抵押资产从用户地址转移到 mysticAdap
 
 ```mermaid
 sequenceDiagram
-    User->>Mystic: 我有1SDT，帮我开3倍杠杆做多ETH，闪电贷借USDT
+    User->>Mystic: 我有1ETH，帮我开3倍杠杆做多ETH，闪电贷借USDT
     Mystic->>mysticAdapter: 够流动性闪电贷开仓吗
     mysticAdapter->>Mystic: 不够，你自己循环开仓吧
     
