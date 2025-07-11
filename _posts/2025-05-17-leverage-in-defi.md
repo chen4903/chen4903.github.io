@@ -312,7 +312,7 @@ sequenceDiagram
     mysticAdapter->>Mystic: 不够，你自己循环开仓吧
     
 		Mystic->>Mystic: ok。1ETH的抵押，可以借出1600USDT，1600USDT再换成0.8ETH。目前杠杆倍数为1600/2000=0.8
-		Mystic->>Mystic: 不够3*0.9。0.8ETH的新增抵押，可以借出1280USDT，1280USDT再换成0.64ETH。目前杠杆倍数为2880/2000=1.44=0.8
+		Mystic->>Mystic: 不够3*0.9。0.8ETH的新增抵押，可以借出1280USDT，1280USDT再换成0.64ETH。目前杠杆倍数为2880/2000=1.44<3*0.9
 		Mystic->>Mystic: [...]
 		Mystic->>Mystic: 某一轮，使得杠杆倍数大于3*0.9或者达到20轮了
 		
