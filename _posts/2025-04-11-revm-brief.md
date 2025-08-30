@@ -13,7 +13,7 @@ commit f1536df67c5b6f18be117a2a6638752ea3e077d9 (HEAD, tag: v67)
 
 ## TODO
 
-- [ ] bytecode
+- [x] bytecode
 - [ ] context
 - [ ] database
 - [ ] handler
