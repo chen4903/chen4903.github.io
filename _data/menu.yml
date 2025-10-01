@@ -12,8 +12,13 @@ entries:
       show_more_text: See archive...
       show_more_url: article-archive.html
 
-  - title: Blockchain Articles
-    url: https://github.com/chen4903/technical-article/tree/main/blockchain
+  - title: Articles
+    entries:
+      - title: Blockchain Articles
+        url: https://github.com/chen4903/technical-article/tree/main/blockchain
+
+  - title: Blockchain Attack Events Analysis
+    url: https://github.com/chen4903/blockchain-attack-analysis/tree/main
 
   - title: Solana
     entries:
