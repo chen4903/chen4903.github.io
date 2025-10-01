@@ -5,7 +5,7 @@ entries:
   - title: About
     url: about
 
-  - title: Non-Technical Articles
+  - title: (・Д・)ノ 随心记
     post_list:
       category: articles
       limit: 5
@@ -13,38 +13,58 @@ entries:
       show_more_url: article-archive.html
 
   - title: Blockchain Articles
-    post_list:
-      category: blockchain
-      limit: 5
-      show_more: true
-      show_more_text: See archive...
-      show_more_url: blockchain-archive.html
+    url: https://github.com/chen4903/technical-article/tree/main/blockchain
 
-  - title: REVM Articles
-    post_list:
-      category: revm
-      limit: 5
-      show_more: true
-      show_more_text: See archive...
-      show_more_url: revm-archive.html
-
-  - title: Notes
+  - title: Solana
     entries:
-      - title: PL
-        entries:
-          - title: Static Program Analysis
-            url: https://github.com/chen4903/Static-Program-Analysis
-          - title: Compiler Principals
-            url: https://github.com/chen4903/compiler-principles
-      - title: UniswapX
-        url: https://github.com/chen4903/uniswap-learn
-      - title: Solana
+      - title: Solana Learning
         url: https://github.com/chen4903/Index-Solana
+      - title: Solana Hack Library
+        url: https://github.com/chen4903/solana-hack-library
+
+  - title: Researches
+    entries:
+      - title: FlashLoan Comparisons
+        url: https://github.com/chen4903/FlashLoan-Comparisons
+      - title: Liquidation Comparisons
+        url: https://github.com/chen4903/Liquidation-Comparisons
+
+  - title: Projects
+    entries:
+      - title: Paprika
+        url: https://github.com/chen4903/paprika-backend
+
+  - title: Public Goods
+    entries:
+      - title: AAVE-V2-Tutorials [12 episodes]
+        url: https://www.bilibili.com/video/BV1DE3ozdEDk/?spm_id_from=333.1387.upload.video_card.click&vd_source=0cc0401ee122346d6680e90658b0ed1a
+
+  - title: DeFi
+    entries:
+      - title: Uniswap-X
+        url: https://github.com/chen4903/uniswap-learn
+      - title: AAVE-X(private)
+        url: https://github.com/chen4903/aave-v2-foundry
+
+  - title: PL
+    entries:
+      - title: Static Program Analysis
+        url: https://github.com/chen4903/Static-Program-Analysis
+      - title: Compiler Principals
+        url: https://github.com/chen4903/compiler-principles
       - title: Rust
         url: https://github.com/chen4903/Index-Rust
 
   - title: CTF Writeups
     url: https://github.com/chen4903/CTFs-Writeup
 
-  - title: RSS
-    url: /feed.xml
+  - title: MISC
+    entries:
+      - title: Awesome Solidity Templates
+        url: https://github.com/chen4903/awesome-solidity-template
+      - title: OS Learning Notes
+        url: https://github.com/chen4903/OS
+      - title: Network Protocol Learning Notes
+        url: https://github.com/chen4903/networkProtocol
+      - title: EIP-Library
+        url: https://github.com/chen4903/eip-library

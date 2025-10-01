@@ -5,6 +5,11 @@ title: About
 
 Hola, I am Qin Chen, and my nickname is LEVI_104. I major in computer science, and now I am focusing on blockchain security and Distributed Finance (DeFi). I plan on using this space to conduct some technical analysis, and sometimes I write smaller or personal pieces. If you have any fun ideas or things to share, feel free to contact me :)
 
+Work Experience
+- 2024-04 ~ 2024-10: [D23E](https://d23e.ch/)
+- 2024-10 ~ 2025-01: [Salus](https://salusec.io/)
+- 2025-02 ~ now: [Semantic Layer](https://semanticlayer.io/)
+
 Contact:
 
 - WeChat: `echo "TEVWSV8xMDQ=" | base64 -d`
