@@ -38,6 +38,8 @@ entries:
     entries:
       - title: Paprika
         url: https://github.com/chen4903/paprika-backend
+      - title: Grouper
+        url: https://github.com/chen4903/grouper
 
   - title: Public Goods
     entries:
