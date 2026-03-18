@@ -52,6 +52,8 @@ entries:
         url: https://github.com/chen4903/uniswap-learn
       - title: AAVE-X(private)
         url: https://github.com/chen4903/aave-v2-foundry
+      - title: Morpho
+        url: https://github.com/chen4903/Morpho-library
 
   - title: PL
     entries:
