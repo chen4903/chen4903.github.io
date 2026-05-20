@@ -9,8 +9,7 @@ Work Experience
 - 2024-04 ~ 2024-10: [D23E](https://d23e.ch/), intern
 - 2024-10 ~ 2025-01: [Salus](https://salusec.io/), intern
 - 2025-02 ~ 2026-01: [Semantic Layer](https://semanticlayer.io/), backend dev
-
-Hiring available.
+- 2026-03 ~ now: [BiyaPay](https://www.biyapay.com/en), security researcher and blockchain dev 
 
 Contact:
 
