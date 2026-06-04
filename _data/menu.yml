@@ -5,76 +5,47 @@ entries:
   - title: About
     url: about
 
-  - title: (・Д・)ノ 随心记
+  - title: w(ﾟДﾟ)w ﾊｧ? 我总爱胡思乱想
     post_list:
       category: articles
-      limit: 5
+      limit: 10
       show_more: true
       show_more_text: See archive...
       show_more_url: article-archive.html
 
-  - title: Articles
+  - title: Technical Article Collections
     entries:
-      - title: Blockchain Articles
+      - title: Blockchain Related
         url: https://github.com/chen4903/technical-article/tree/main/blockchain
+      - title: Traditional CS
+        url: https://github.com/chen4903/technical-article/tree/main/web2
 
-  # - title: Blockchain Attack Events Analysis(private)
-  #   url: https://github.com/chen4903/blockchain-attack-analysis/tree/main
-
-  - title: Solana
+  - title: I love building, some open-source stuff here
     entries:
-      - title: Solana Learning
-        url: https://github.com/chen4903/Index-Solana
-      - title: Solana Hack Library
-        url: https://github.com/chen4903/solana-hack-library
-
-  - title: Researches
-    entries:
-      - title: FlashLoan Comparisons
-        url: https://github.com/chen4903/FlashLoan-Comparisons
-      - title: Liquidation Comparisons
-        url: https://github.com/chen4903/Liquidation-Comparisons
-
-  - title: Projects
-    entries:
-      - title: Paprika
+      - title: Paprika, a simple visual page for evm bytecode decompilation, is also my undergraduate software design project
         url: https://github.com/chen4903/paprika-backend
-      - title: Grouper
-        url: https://github.com/chen4903/grouper
+      - title: Grouper, a Four.Meme Sniper Bot
+        url: https://github.com/b1ockk/grouper
 
-  - title: Public Goods
+  - title: Catch me on Bilibili! ( ゜- ゜)つロ乾杯~
     entries:
-      - title: AAVE-V2-Tutorials [12 episodes]
+      - title: I elaborated on the principles and code of AAVE V2 in detail over 12 video episodes!
         url: https://www.bilibili.com/video/BV1DE3ozdEDk/?spm_id_from=333.1387.upload.video_card.click&vd_source=0cc0401ee122346d6680e90658b0ed1a
-
-  - title: DeFi
-    entries:
-      - title: Uniswap-X
-        url: https://github.com/chen4903/uniswap-learn
-      # - title: AAVE-X(private)
-      #   url: https://github.com/chen4903/aave-v2-foundry
-      - title: Morpho
-        url: https://github.com/chen4903/Morpho-library
 
   - title: PL
     entries:
-      - title: Static Program Analysis
+      - title: Static program analysis is interesting, let's catch bugs
         url: https://github.com/chen4903/Static-Program-Analysis
-      - title: Compiler Principals
+      - title: Compiler principals, but I haven't finished it yet
         url: https://github.com/chen4903/compiler-principles
-      - title: Rust
-        url: https://github.com/chen4903/Index-Rust
-
-  - title: CTF Writeups
-    url: https://github.com/chen4903/CTFs-Writeup
 
   - title: MISC
     entries:
-      - title: Awesome Solidity Templates
-        url: https://github.com/chen4903/awesome-solidity-template
-      - title: OS Learning Notes
-        url: https://github.com/chen4903/OS
-      - title: Network Protocol Learning Notes
-        url: https://github.com/chen4903/networkProtocol
+      - title: Collect and compare the Flashloan protocols in EVM
+        url: https://github.com/chen4903/FlashLoan-Comparisons
+      - title: I love CTFs! Here are my WPs
+        url: https://github.com/chen4903/CTFs-Writeup
+      - title: My notes for different versions of Uniswap
+        url: https://github.com/chen4903/uniswap-learn
       - title: EIP-Library
         url: https://github.com/chen4903/eip-library
