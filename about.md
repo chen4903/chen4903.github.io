@@ -5,7 +5,7 @@ title: About
 
 Hola, I am 陈钦 (Qin Chen), and my nickname is LEVI_104. I major in computer science, and now I am focusing on blockchain security and Distributed Finance (DeFi). I plan on using this space to conduct some technical analysis, and sometimes I write smaller or personal pieces. 
 
-Feel free to reach out anytime if you have any fun ideas you want to share! I’m always here to listen if you’ve got a story or just want to talk about life—I'm all ears, my friend.
+Feel free to reach out anytime if you have any fun ideas you want to share! I’m always here to listen if you’ve got a story or just want to talk about life.
 
 Work Experience
 - 2024-04 ~ 2024-10: [D23E](https://d23e.ch/), intern. All about blockchain security, like fuzzer, swap aggregator, mev, etc.
